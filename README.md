@@ -14,12 +14,24 @@ The guide should:
 
 ## Deploy (real workflow)
 
+Real bucket + distribution (thin: private S3 bucket + CloudFront Origin
+Access Control, no static-website-hosting mode, no custom domain):
+
 ```
-aws s3 sync . s3://my-cloudfront-bucket/ --exclude ".git/*" --delete
-aws cloudfront create-invalidation --distribution-id XXXXX --paths "/*"
+aws s3 sync . s3://fia-test-web-cloudfront-821788677871/ --exclude ".git/*" --delete
+aws cloudfront create-invalidation --distribution-id EYRDYX9BP9YNQ --paths "/*"
 ```
+
+Live URL: **https://d3j616vws7mkty.cloudfront.net**
 
 ## Register this tool on FIA
 
-System type: **Web widget**  
-Allowed Origins: `https://d3testexample12345.cloudfront.net` *(or your actual CF URL)*
+System type: **Web widget**
+Allowed Origins: `https://d3j616vws7mkty.cloudfront.net`
+
+## Teardown
+
+When resetting/uninstalling this test, also remove the AWS resources (not
+just the FIA kit files): delete the CloudFront distribution
+(`EYRDYX9BP9YNQ`, must be disabled first, then deleted once fully
+disabled) and the S3 bucket (`fia-test-web-cloudfront-821788677871`).
