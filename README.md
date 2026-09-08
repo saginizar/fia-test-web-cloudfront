@@ -18,9 +18,14 @@ Real bucket + distribution (thin: private S3 bucket + CloudFront Origin
 Access Control, no static-website-hosting mode, no custom domain):
 
 ```
-aws s3 sync . s3://fia-test-web-cloudfront-821788677871/ --exclude ".git/*" --delete
+aws s3 sync . s3://fia-test-web-cloudfront-821788677871/ --exclude ".git/*" --exclude "Intelligent-Feedback-Agent-FIA/*" --exclude ".cursor/*" --exclude ".claude/*" --delete
 aws cloudfront create-invalidation --distribution-id EYRDYX9BP9YNQ --paths "/*"
 ```
+
+**Note:** the `--exclude` flags above matter — `aws s3 sync` mirrors the whole
+directory verbatim and is NOT git-aware, so without them it also publishes
+whatever FIA install files exist locally (including the owner's secret
+`fia.owner.local.json`) to this public CloudFront distribution.
 
 Live URL: **https://d3j616vws7mkty.cloudfront.net**
 
